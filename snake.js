@@ -150,6 +150,9 @@ const main = function() {
     if (game.isGameOver()) {
       alert("GAME OVER");
     }
+    if (game.score === NUM_OF_COLS) {
+      alert("YOU WON");
+    }
     drawUpdatedGame(game);
   }, 200);
 };

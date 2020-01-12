@@ -38,7 +38,6 @@ class Game {
   update() {
     if (this.hasFoodEaten()) {
       this.score = this.score + this.food.point;
-      console.log(this.food);
       this.snake.grow();
       this.generateFood();
     }
