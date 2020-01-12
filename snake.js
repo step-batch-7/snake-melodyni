@@ -13,15 +13,16 @@ const isInSameCell = function(body, cell) {
 };
 
 class Game {
-  constructor(snake, ghostSnake, food) {
+  constructor(snake, ghostSnake, food, gridSize) {
     this.snake = snake;
     this.ghostSnake = ghostSnake;
     this.food = food;
     this.previousFood = new Food(1, 1);
+    this.gridSize = gridSize;
   }
 
   hasFoodEaten() {
-    const headOfSnake = this.snake.location.slice(-1);
+    const headOfSnake = [this.snake.head];
     const foodPosition = this.food.positions;
     return isInSameCell(headOfSnake, foodPosition);
   }
@@ -33,8 +34,16 @@ class Game {
     this.food = new Food(colId, rowId);
   }
 
+  hasTouchedEdges() {
+    const [gridWidth, gridHeight] = this.gridSize;
+    const [headCol, headRow] = this.snake.head;
+    const touchedHorizontalEdge = 0 > headCol || headCol > gridWidth;
+    const touchedVerticalEdge = 0 > headRow || headRow > gridHeight;
+    return touchedHorizontalEdge || touchedVerticalEdge;
+  }
+
   hasTouchedItself() {
-    const headOfSnake = this.snake.location.slice(-1)[0];
+    const headOfSnake = this.snake.head;
     const bodyOfSnake = this.snake.location.slice(0, -1);
     return isInSameCell(bodyOfSnake, headOfSnake);
   }
@@ -47,7 +56,7 @@ class Game {
   }
 
   isGameOver() {
-    return this.hasTouchedItself();
+    return this.hasTouchedItself() || this.hasTouchedEdges();
   }
 }
 
@@ -78,6 +87,10 @@ class Snake {
     this.previousTail = [0, 0];
   }
 
+  get head() {
+    return this.positions[this.positions.length - 1];
+  }
+
   get location() {
     return this.positions.slice();
   }
@@ -91,7 +104,7 @@ class Snake {
   }
 
   move() {
-    const [headX, headY] = this.positions[this.positions.length - 1];
+    const [headX, headY] = this.head;
     this.previousTail = this.positions.shift();
     const [deltaX, deltaY] = this.direction.delta;
     this.positions.push([headX + deltaX, headY + deltaY]);
@@ -227,13 +240,13 @@ const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
   const food = new Food(10, 10);
-  const game = new Game(snake, ghostSnake, food);
+  const game = new Game(snake, ghostSnake, food, [99, 59]);
   setUp(game);
   setInterval(() => {
     game.update();
-    drawUpdatedGame(game);
     if (game.isGameOver()) {
       alert("GAME OVER");
     }
+    drawUpdatedGame(game);
   }, 200);
 };

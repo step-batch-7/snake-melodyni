@@ -19,9 +19,9 @@
 --DONE-- * Generate food periodically
 --DONE-- * Allow snake to eat food when food becomes available
 --DONE-- * Upon eating the food, snake should grow tall
-
 --DONE-- * refactor code 
-
 --DONE-- * If snake touches itself the game should be over
-* If snake touches walls the game should be over
+--DONE-- * If snake touches walls the game should be over
+
+read and refactor
 * Add a scoring mechanism
