@@ -1,10 +1,11 @@
 class Game {
-  constructor(snake, ghostSnake, food, gridSize) {
+  constructor(snake, ghostSnake, food, gridSize, score) {
     this.snake = snake;
     this.ghostSnake = ghostSnake;
     this.food = food;
-    this.previousFood = new Food(1, 1);
+    this.previousFood = new Food(1, 1, 1);
     this.gridSize = gridSize;
+    this.score = score;
   }
 
   hasFoodEaten() {
@@ -17,7 +18,7 @@ class Game {
     this.previousFood = this.food;
     const colId = getRandomNumUnder(NUM_OF_COLS);
     const rowId = getRandomNumUnder(NUM_OF_ROWS);
-    this.food = new Food(colId, rowId);
+    this.food = new Food(colId, rowId, 1);
   }
 
   hasTouchedEdges() {
@@ -36,6 +37,8 @@ class Game {
 
   update() {
     if (this.hasFoodEaten()) {
+      this.score = this.score + this.food.point;
+      console.log(this.food);
       this.snake.grow();
       this.generateFood();
     }
@@ -102,11 +105,15 @@ class Snake {
 }
 
 class Food {
-  constructor(colId, rowId) {
+  constructor(colId, rowId, energy) {
     this.colId = colId;
     this.rowId = rowId;
+    this.energy = energy;
   }
   get positions() {
     return [this.colId, this.rowId];
+  }
+  get point() {
+    return this.energy;
   }
 }

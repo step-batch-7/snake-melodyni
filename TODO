@@ -23,7 +23,7 @@
 --DONE-- * If snake touches itself the game should be over
 --DONE-- * If snake touches walls the game should be over
 
+--DONE-- * Add a scoring mechanism
 * Move snake in right direction
 
 read and refactor
-* Add a scoring mechanism

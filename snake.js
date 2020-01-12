@@ -16,7 +16,9 @@ const NUM_OF_COLS = 100;
 const NUM_OF_ROWS = 60;
 
 const GRID_ID = "grid";
+const SCORE_ID = "scoreGrid";
 
+const getScoreGrid = () => document.getElementById(SCORE_ID);
 const getGrid = () => document.getElementById(GRID_ID);
 const getCellId = (colId, rowId) => colId + "_" + rowId;
 
@@ -30,6 +32,13 @@ const createCell = function(grid, colId, rowId) {
   grid.appendChild(cell);
 };
 
+const createScoreGrid = function() {
+  const scoreGrid = getScoreGrid();
+  for (let x = 1; x <= NUM_OF_COLS; x++) {
+    createCell(scoreGrid, x, 61);
+  }
+};
+
 const createGrids = function() {
   const grid = getGrid();
   for (let y = 0; y < NUM_OF_ROWS; y++) {
@@ -39,6 +48,11 @@ const createGrids = function() {
   }
 };
 
+const fillScores = function(score) {
+  const cell = getCell(score, 61);
+  console.log(score, cell);
+  cell.classList.add("score");
+};
 const eraseTail = function(snake) {
   let [colId, rowId] = snake.previousTail;
   const cell = getCell(colId, rowId);
@@ -81,6 +95,7 @@ const attachEventListeners = snake => {
 const setUp = function(game) {
   attachEventListeners(game.snake);
   createGrids();
+  createScoreGrid();
   drawSnake(game.snake);
   drawSnake(game.ghostSnake);
   drawFood(game.food);
@@ -121,13 +136,14 @@ const drawUpdatedGame = function(game) {
   randomlyTurnSnake(game.ghostSnake);
   clearFood(game.previousFood);
   drawFood(game.food);
+  game.score && fillScores(game.score);
 };
 
 const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
-  const food = new Food(10, 10);
-  const game = new Game(snake, ghostSnake, food, [99, 59]);
+  const food = new Food(10, 10, 1);
+  const game = new Game(snake, ghostSnake, food, [99, 59], 0);
   setUp(game);
   setInterval(() => {
     game.update();
