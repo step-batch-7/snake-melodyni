@@ -25,6 +25,8 @@ class Game {
     const rowId = getRandomNumUnder(NUM_OF_ROWS);
     this.food = new Food(colId, rowId);
   }
+
+  update() {}
 }
 
 class Direction {
@@ -73,6 +75,10 @@ class Snake {
     const [deltaX, deltaY] = this.direction.delta;
 
     this.positions.push([headX + deltaX, headY + deltaY]);
+  }
+
+  grow() {
+    this.positions.unshift(this.previousTail);
   }
 }
 
@@ -205,6 +211,7 @@ const main = function() {
 const updateGame = function(game) {
   if (game.hasFoodEaten()) {
     clearFood(game.food);
+    game.snake.grow();
     game.generateFood();
     drawFood(game.food);
   }
