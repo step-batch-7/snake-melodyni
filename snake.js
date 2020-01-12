@@ -7,6 +7,11 @@ const getRandomNumUnder = function(number) {
   return Math.round(Math.random() * number);
 };
 
+const isInSameCell = function(body, cell) {
+  const [cellCol, cellRow] = cell;
+  return body.some(([col, row]) => col === cellCol && row === cellRow);
+};
+
 class Game {
   constructor(snake, ghostSnake, food) {
     this.snake = snake;
@@ -16,9 +21,9 @@ class Game {
   }
 
   hasFoodEaten() {
-    const [snakeColId, snakeRowId] = this.snake.location.slice(-1)[0];
-    const [foodColId, foodRowId] = this.food.positions;
-    return snakeColId === foodColId && snakeRowId === foodRowId;
+    const headOfSnake = this.snake.location.slice(-1);
+    const foodPosition = this.food.positions;
+    return isInSameCell(headOfSnake, foodPosition);
   }
 
   generateFood() {
@@ -28,11 +33,21 @@ class Game {
     this.food = new Food(colId, rowId);
   }
 
+  hasTouchedItself() {
+    const headOfSnake = this.snake.location.slice(-1)[0];
+    const bodyOfSnake = this.snake.location.slice(0, -1);
+    return isInSameCell(bodyOfSnake, headOfSnake);
+  }
+
   update() {
     if (this.hasFoodEaten()) {
       this.snake.grow();
       this.generateFood();
     }
+  }
+
+  isGameOver() {
+    return this.hasTouchedItself();
   }
 }
 
@@ -78,9 +93,7 @@ class Snake {
   move() {
     const [headX, headY] = this.positions[this.positions.length - 1];
     this.previousTail = this.positions.shift();
-
     const [deltaX, deltaY] = this.direction.delta;
-
     this.positions.push([headX + deltaX, headY + deltaY]);
   }
 
@@ -219,5 +232,8 @@ const main = function() {
   setInterval(() => {
     game.update();
     drawUpdatedGame(game);
+    if (game.isGameOver()) {
+      alert("GAME OVER");
+    }
   }, 200);
 };
