@@ -29,12 +29,6 @@ class Game {
     return touchedHorizontalEdge || touchedVerticalEdge;
   }
 
-  hasTouchedItself() {
-    const headOfSnake = this.snake.head;
-    const bodyOfSnake = this.snake.location.slice(0, -1);
-    return isInSameCell(bodyOfSnake, headOfSnake);
-  }
-
   update() {
     if (this.hasFoodEaten()) {
       this.score = this.score + this.food.point;
@@ -44,7 +38,7 @@ class Game {
   }
 
   isGameOver() {
-    return this.hasTouchedItself() || this.hasTouchedEdges();
+    return this.snake.hasTouchedItself() || this.hasTouchedEdges();
   }
 }
 
@@ -100,6 +94,11 @@ class Snake {
 
   grow() {
     this.positions.unshift(this.previousTail);
+  }
+
+  hasTouchedItself() {
+    const bodyOfSnake = this.location.slice(0, -1);
+    return isInSameCell(bodyOfSnake, this.head);
   }
 }
 

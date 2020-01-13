@@ -133,7 +133,7 @@ const drawUpdatedGame = function(game) {
 const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
-  const food = new Food(10, 10, 2);
+  const food = new Food(43, 25, 1);
   const game = new Game(snake, ghostSnake, food, [99, 59], 0);
   setUp(game);
   const runGame = setInterval(() => {
