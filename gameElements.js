@@ -3,7 +3,7 @@ class Game {
     this.snake = snake;
     this.ghostSnake = ghostSnake;
     this.food = food;
-    this.previousFood = new Food(1, 1, 1);
+    this.previousFood = new Food(1, 1, 1, "normalFood");
     this.gridSize = gridSize;
     this.score = score;
   }
@@ -18,8 +18,10 @@ class Game {
     this.previousFood = this.food;
     const colId = getRandomNumUnder(NUM_OF_COLS);
     const rowId = getRandomNumUnder(NUM_OF_ROWS);
-    const energy = getRandomNumUnder(5);
-    this.food = new Food(colId, rowId, energy);
+    this.food = new Food(colId, rowId, 1, "food");
+    if (this.score % 10 === 0) {
+      this.food = new Food(colId, rowId, 5, "powerFood");
+    }
   }
 
   hasTouchedEdges() {
@@ -104,15 +106,20 @@ class Snake {
 }
 
 class Food {
-  constructor(colId, rowId, energy) {
+  constructor(colId, rowId, energy, type) {
     this.colId = colId;
     this.rowId = rowId;
     this.energy = energy;
+    this.type = type;
   }
+
   get positions() {
     return [this.colId, this.rowId];
   }
   get point() {
     return this.energy;
+  }
+  get quality() {
+    return this.type;
   }
 }

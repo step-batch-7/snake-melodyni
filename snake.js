@@ -4,7 +4,7 @@ const WEST = 2;
 const SOUTH = 3;
 
 const getRandomNumUnder = function(number) {
-  return Math.round(Math.random() * number);
+  return Math.floor(Math.random() * number);
 };
 
 const isInSameCell = function(body, cell) {
@@ -61,13 +61,13 @@ const drawSnake = function(snake) {
 const clearFood = function(food) {
   let [colId, rowId] = food.positions;
   const cell = getCell(colId, rowId);
-  cell.classList.remove("food");
+  cell.classList.remove(food.type);
 };
 
 const drawFood = function(food) {
   const [colId, rowId] = food.positions;
   const cell = getCell(colId, rowId);
-  cell.classList.add("food");
+  cell.classList.add(food.type);
 };
 
 const handleKeyPress = snake => {
@@ -133,19 +133,17 @@ const drawUpdatedGame = function(game) {
 const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
-  const food = new Food(43, 25, 1);
+  const food = new Food(45, 25, 1, "food");
   const game = new Game(snake, ghostSnake, food, [99, 59], 0);
   setUp(game);
   const runGame = setInterval(() => {
     game.update();
     drawUpdatedGame(game);
     if (game.isGameOver()) {
-      alert("GAME OVER");
       clearInterval(runGame);
     }
     if (game.score >= NUM_OF_COLS) {
-      // alert("YOU WON");
       clearInterval(runGame);
     }
-  }, 200);
+  }, 100);
 };
