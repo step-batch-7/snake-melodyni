@@ -138,14 +138,14 @@ const main = function() {
   setUp(game);
   const runGame = setInterval(() => {
     game.update();
+    drawUpdatedGame(game);
     if (game.isGameOver()) {
       alert("GAME OVER");
       clearInterval(runGame);
     }
-    if (game.score === NUM_OF_COLS) {
-      alert("YOU WON");
+    if (game.score >= NUM_OF_COLS) {
+      // alert("YOU WON");
       clearInterval(runGame);
     }
-    drawUpdatedGame(game);
   }, 200);
 };

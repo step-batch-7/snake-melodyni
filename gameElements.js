@@ -18,7 +18,8 @@ class Game {
     this.previousFood = this.food;
     const colId = getRandomNumUnder(NUM_OF_COLS);
     const rowId = getRandomNumUnder(NUM_OF_ROWS);
-    this.food = new Food(colId, rowId, 1);
+    const energy = getRandomNumUnder(5);
+    this.food = new Food(colId, rowId, energy);
   }
 
   hasTouchedEdges() {
