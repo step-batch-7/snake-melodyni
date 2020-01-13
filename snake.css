@@ -10,7 +10,7 @@ h1 {
   border: 1px solid black;
 }
 
-#scoreGrid {
+#progressBar {
   width: 800px;
   height: 8px;
   display: flex;
@@ -36,6 +36,7 @@ h1 {
   background-color: red;
 }
 
-.score {
+#progress {
   background-color: rgb(24, 224, 24);
+  width: 0%;
 }
