@@ -133,16 +133,18 @@ const drawUpdatedGame = function(game) {
 const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
-  const food = new Food(10, 10, 1);
+  const food = new Food(10, 10, 2);
   const game = new Game(snake, ghostSnake, food, [99, 59], 0);
   setUp(game);
-  setInterval(() => {
+  const runGame = setInterval(() => {
     game.update();
     if (game.isGameOver()) {
       alert("GAME OVER");
+      clearInterval(runGame);
     }
     if (game.score === NUM_OF_COLS) {
       alert("YOU WON");
+      clearInterval(runGame);
     }
     drawUpdatedGame(game);
   }, 200);

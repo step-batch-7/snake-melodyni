@@ -25,14 +25,17 @@ h1 {
 }
 
 .snake {
+  border-radius: 2px;
   background-color: black;
 }
 
 .ghost {
+  border-radius: 2px;
   background-color: gray;
 }
 
 .food {
+  border-radius: 8px;
   background-color: red;
 }
 
