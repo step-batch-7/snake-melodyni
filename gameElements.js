@@ -3,7 +3,6 @@ class Game {
     this.snake = snake;
     this.ghostSnake = ghostSnake;
     this.food = food;
-    this.previousFood = new Food(1, 1, 1, "normalFood");
     this.gridSize = gridSize;
     this.score = score;
   }
@@ -29,6 +28,7 @@ class Game {
     const [headCol, headRow] = this.snake.head;
     const touchedHorizontalEdge = 0 > headCol || headCol > gridWidth;
     const touchedVerticalEdge = 0 > headRow || headRow > gridHeight;
+
     return touchedHorizontalEdge || touchedVerticalEdge;
   }
 
@@ -38,6 +38,7 @@ class Game {
       this.snake.grow();
       this.generateFood();
     }
+    this.snake.move();
   }
 
   isGameOver() {

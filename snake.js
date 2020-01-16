@@ -58,10 +58,10 @@ const drawSnake = function(snake) {
   });
 };
 
-const clearFood = function(food) {
-  let [colId, rowId] = food.positions;
-  const cell = getCell(colId, rowId);
-  cell.classList.remove(food.type);
+const clearFood = function() {
+  const foodElement =
+    document.querySelector(".food") || document.querySelector(".powerFood");
+  foodElement.classList.remove("food", "powerFood");
 };
 
 const drawFood = function(food) {
@@ -75,7 +75,6 @@ const handleKeyPress = snake => {
 };
 
 const moveAndDrawSnake = function(snake) {
-  snake.move();
   eraseTail(snake);
   drawSnake(snake);
 };
@@ -125,7 +124,7 @@ const initGhostSnake = function() {
 const drawUpdatedGame = function(game) {
   animateSnake(game.snake, game.ghostSnake);
   randomlyTurnSnake(game.ghostSnake);
-  clearFood(game.previousFood);
+  clearFood();
   drawFood(game.food);
   fillScores(game.score);
 };
@@ -138,12 +137,14 @@ const main = function() {
   setUp(game);
   const runGame = setInterval(() => {
     game.update();
-    drawUpdatedGame(game);
     if (game.isGameOver()) {
+      alert("GAME OVER");
       clearInterval(runGame);
+      return;
     }
     if (game.score >= NUM_OF_COLS) {
       clearInterval(runGame);
     }
+    drawUpdatedGame(game);
   }, 100);
 };
