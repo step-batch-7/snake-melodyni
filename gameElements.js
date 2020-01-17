@@ -14,7 +14,6 @@ class Game {
   }
 
   generateFood() {
-    this.previousFood = this.food;
     const colId = getRandomNumUnder(NUM_OF_COLS);
     const rowId = getRandomNumUnder(NUM_OF_ROWS);
     this.food = new Food(colId, rowId, 1, "food");
@@ -32,6 +31,14 @@ class Game {
     return touchedHorizontalEdge || touchedVerticalEdge;
   }
 
+  hasPlayerWon() {
+    return this.score >= this.gridSize[0];
+  }
+
+  turnSnake() {
+    this.snake.turnLeft();
+  }
+
   update() {
     if (this.hasFoodEaten()) {
       this.score = this.score + this.food.point;
@@ -39,10 +46,27 @@ class Game {
       this.generateFood();
     }
     this.snake.move();
+    this.ghostSnake.move();
   }
 
-  isGameOver() {
-    return this.snake.hasTouchedItself() || this.hasTouchedEdges();
+  isOver() {
+    return this.snake.hasTouchedItself() || this.hasTouchedEdges() || this.hasPlayerWon();
+  }
+
+  status() {
+    return {
+      food: this.food.status(),
+      snake: this.snake.status(),
+      ghostSnake: this.ghostSnake.status(),
+      score: this.score
+    }
+  }
+
+  turnGhostSnake() {
+    let x = Math.random() * 100;
+    if (x > 50) {
+      this.ghostSnake.turnLeft()
+    }
   }
 }
 
@@ -104,6 +128,14 @@ class Snake {
     const bodyOfSnake = this.location.slice(0, -1);
     return isInSameCell(bodyOfSnake, this.head);
   }
+
+  status() {
+    return {
+      positions: this.location,
+      species: this.species,
+      previousTail: this.previousTail
+    }
+  }
 }
 
 class Food {
@@ -122,5 +154,12 @@ class Food {
   }
   get quality() {
     return this.type;
+  }
+  status() {
+    return {
+      positions: this.positions,
+      point: this.point,
+      quality: this.quality
+    }
   }
 }
